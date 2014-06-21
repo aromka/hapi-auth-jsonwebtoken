@@ -1,0 +1,38 @@
+{
+    "name": "hapi-auth-jsonwebtoken",
+    "description": "JSON Web Token (JWT) authentication plugin",
+    "version": "0.2.0",
+    "author": "Boketto <info@boket.to>",
+    "repository": "git://github.com/boketto/hapi-auth-jsonwebtoken",
+    "main": "index",
+    "keywords": [
+        "hapi",
+        "plugin",
+        "auth",
+        "JWT",
+        "jsonwebtoken",
+        "token"
+    ],
+    "engines": {
+        "node": "0.10.x"
+    },
+    "dependencies": {
+        "boom": "2.x.x",
+        "hoek": "1.x.x",
+        "jsonwebtoken": "~0.1.0"
+    },
+    "peerDependencies": {
+        "hapi": ">=6.x.x"
+    },
+    "devDependencies": {
+        "hapi": "6.x.x",
+        "lab": "1.x.x",
+        "grunt": "~0.4.2",
+        "grunt-contrib-jshint": "~0.8.0",
+        "grunt-contrib-watch": "~0.5.3",
+        "grunt-bump": "0.0.13"
+    },
+    "scripts": {
+        "test": "make test-cov"
+    }
+}
