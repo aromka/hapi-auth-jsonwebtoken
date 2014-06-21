@@ -18,7 +18,13 @@ JSON Web Token authentication requires verifying a signed token. The `'jwt'` sch
           included when `isValid` is `true`, but there are cases when the application needs to know who tried to authenticate even when it fails
           (e.g. with authentication mode `'try'`).
 
-See the example folder for an executable example.
+See the example for usage example. To run example:
+
+> cd example
+>
+> npm install
+>
+> node .
 
 ```javascript
 
@@ -54,7 +60,7 @@ var validate = function(token, decodedToken, cb) {
     cb(err, isValid, account);
 };
 
-server.pack.register(require('hapi-auth-jwt'), function (err) {
+server.pack.register(require('hapi-auth-jsonwebtoken'), function (err) {
 
     server.auth.strategy('jwt', 'jwt', { key: privatekey,  validateFunc: validate });
     server.route({ method: 'GET', path: '/', config: { auth: 'jwt' } });
