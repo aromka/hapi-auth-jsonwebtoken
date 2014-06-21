@@ -1,6 +1,6 @@
 ### hapi-auth-jsonwebtoken
 
-[**hapi**](https://github.com/spumko/hapi) JSON Web Token (JWT) authentication plugin
+JSON Web Token (JWT) authentication plugin for [Hapi 6.0](https://github.com/spumko/hapi) 
 
 Based on original version of [hapi-auth-jwt by ryanfitz](https://github.com/ryanfitz/hapi-auth-jwt), modified to work with Hapi 6.0, and return some additional data for validateFunc (original token).
 The original token can be used for extra validation, i.e. check against redis to make sure token is valid.
@@ -22,27 +22,39 @@ See the example folder for an executable example.
 
 ```javascript
 
-var accounts = {
-    123: {
-      id: 123,
-      user: 'john',
-      name: 'John Doe',
-      scope: ['a', 'b']
-    }
-};
+var privateKey = 'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc',
+    accounts = {
+        123: {
+          id: 123,
+          user: 'john',
+          name: 'John Doe',
+          scope: ['a', 'b']
+        }
+    };
 
-var validate = function(token, decodedToken, callback) {
+// validation function
+var validate = function(token, decodedToken, cb) {
+
+    /**
+     * Here we can check if token is valid, i.e. if we're storing token in redis after user logged in:
+     *
+     * var isValid = false;
+     * redis.get(token, function(err, val) {
+     *  if (val) {
+     *      isValid = true;
+     *  }
+     * });
+     */
 
     var account = accounts[decodedToken.accountID];
-    if (!account) {
-        return callback(null, false);
+    if (!account || !isValid) {
+        return cb(null, false);
     }
 
-    callback(err, isValid, {id: account.id, name: account.name });
+    cb(err, isValid, account);
 };
 
 server.pack.register(require('hapi-auth-jwt'), function (err) {
-    var privateKey = 'BbZJjyoXAdr8BUZuiKKARWimKfrSmQ6fv8kZ7OFfc';
 
     server.auth.strategy('jwt', 'jwt', { key: privatekey,  validateFunc: validate });
     server.route({ method: 'GET', path: '/', config: { auth: 'jwt' } });
