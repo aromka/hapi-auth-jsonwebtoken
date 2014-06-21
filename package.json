@@ -1,7 +1,7 @@
 {
     "name": "hapi-auth-jsonwebtoken",
     "description": "JSON Web Token (JWT) authentication plugin",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "author": "Boketto <info@boket.to>",
     "repository": "git://github.com/boketto/hapi-auth-jsonwebtoken",
     "main": "index",
@@ -9,7 +9,7 @@
         "hapi",
         "plugin",
         "auth",
-        "JWT",
+        "jwt",
         "jsonwebtoken",
         "token"
     ],
