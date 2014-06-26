@@ -2,6 +2,12 @@
 
 [![Build Status](https://travis-ci.org/boketto/hapi-auth-jsonwebtoken.svg?branch=master)](https://travis-ci.org/boketto/hapi-auth-jsonwebtoken)
 
+#### Instalation
+
+> npm install hapi-auth-jsonwebtoken --save
+
+#### About plugin
+
 JSON Web Token (JWT) authentication plugin for [Hapi 6.0](https://github.com/spumko/hapi) 
 
 Based on original version of [hapi-auth-jwt by ryanfitz](https://github.com/ryanfitz/hapi-auth-jwt), modified to work with Hapi 6.0, and return some additional data for validateFunc (original token).
