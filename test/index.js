@@ -2,6 +2,7 @@
 
 var Lab  = require('lab');
 var Hapi = require('hapi');
+var Boom = require('boom');
 var jwt  = require('jsonwebtoken');
 
 
@@ -32,7 +33,7 @@ describe('Token', function () {
       });
     }
     else if (username === 'jane') {
-      return callback(Hapi.error.internal('boom'));
+      return callback(Boom.internal('boom'));
     }
     else if (username === 'invalid1') {
       return callback(null, true, 'bad');
@@ -56,10 +57,11 @@ describe('Token', function () {
     });
   };
 
-  var server = new Hapi.Server({ debug: false });
+  var server = new Hapi.Server();
+  server.connection();
   before(function (done) {
 
-    server.pack.register(require('../'), function (err) {
+    server.register(require('../'), function (err) {
 
       expect(err).to.not.exist;
       server.auth.strategy('default', 'jwt', 'required', { key: privateKey,  validateFunc: loadUser });
@@ -93,13 +95,15 @@ describe('Token', function () {
   it('returns decoded token when no validation function is set', function (done) {
 
     var handler = function (request, reply) {
+      console.log('authenticated', request.auth.isAuthenticated);
       expect(request.auth.isAuthenticated).to.equal(true);
       expect(request.auth.credentials).to.exist;
       reply('ok');
     };
 
-    var server = new Hapi.Server({ debug: false });
-    server.pack.register(require('../'), function (err) {
+    var server = new Hapi.Server();
+    server.connection();
+    server.register(require('../'), function (err) {
       expect(err).to.not.exist;
 
       server.auth.strategy('default', 'jwt', 'required', { key: privateKey });
@@ -107,15 +111,15 @@ describe('Token', function () {
       server.route([
         { method: 'POST', path: '/token', handler: handler, config: { auth: 'default' } }
       ]);
-    });
 
-    var request = { method: 'POST', url: '/token', headers: { authorization: tokenHeader('john') } };
+      var request = { method: 'POST', url: '/token', headers: { authorization: tokenHeader('john') } };
 
-    server.inject(request, function (res) {
+      server.inject(request, function (res) {
 
-      expect(res.result).to.exist;
-      expect(res.result).to.equal('ok');
-      done();
+        expect(res.result).to.exist;
+        expect(res.result).to.equal('ok');
+        done();
+      });
     });
   });
 
